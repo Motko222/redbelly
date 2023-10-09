@@ -6,7 +6,7 @@ localHeight=$(cat $HOME/rb/logs/rbbcLogs | grep "Imported new chain segment" | t
 netHeight=$(echo $(( 16#$(curl -s https://rbn-gcp-australia-southeast1-a-0-b-v2.devnet.redbelly.network:8545/ -X POST -H "Content-Type: application/json" --data '{"method":"eth_getBlockByNumber","params":["latest",false],"id":1,"jsonrpc":"2.0"}' | jq -r .result.number | sed 's/0x//') )) )
 type="-"
 ver="-"
-network="devnet"
+network="devnet2"
 isGovernor=$(cat ~/rb/logs/rbbcLogs | grep "IsGovernor" | tail -1 | awk -F 'IsGovernor: ' '{print $2}' | cut -d '"' -f 1)
 
 if (( $localHeight == $netHeight )); then status="ok";note="governor:$isGovernor"; else status="warning";note=" syncing $localHeight/$netHeight"; fi

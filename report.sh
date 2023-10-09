@@ -1,8 +1,9 @@
 #!/bin/bash
 
 pid=$(pgrep 'rbbc')
-localHeight=$(curl -s localhost:8080/metrics | grep -v "#" | grep rbn_database_chaindb_height | awk '{print $2}')
-netHeight=$(echo $(( 16#$(curl -s https://rbn-azure-australiasoutheast-1-0-b.devnet.redbelly.network:8545/ -X POST -H "Content-Type: application/json" --data '{"method":"eth_getBlockByNumber","params":["latest",false],"id":1,"jsonrpc":"2.0"}' | jq -r .result.number | sed 's/0x//') )) )
+#localHeight=$(curl -s localhost:8080/metrics | grep -v "#" | grep rbn_database_chaindb_height | awk '{print $2}')
+localHeight=$(cat $HOME/rb/logs/rbbcLogs | grep "Imported new chain segment" | tail -1 | awk -F 'number":"' '{print $2}' | cut -d '"' -f 1)
+netHeight=$(echo $(( 16#$(curl -s https://rbn-gcp-australia-southeast1-a-0-b-v2.devnet.redbelly.network:8545/ -X POST -H "Content-Type: application/json" --data '{"method":"eth_getBlockByNumber","params":["latest",false],"id":1,"jsonrpc":"2.0"}' | jq -r .result.number | sed 's/0x//') )) )
 type="-"
 ver="-"
 network="devnet"

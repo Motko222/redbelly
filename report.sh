@@ -23,4 +23,4 @@ echo "network='$network'"
 echo "type="$type
 echo "folder="$foldersize
 echo "log="$logsize
-echo "governor=$isGovernor"
+echo "governor=$isGovernor" 

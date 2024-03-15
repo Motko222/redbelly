@@ -16,6 +16,7 @@ log_size=$(du -hs ~/rb/logs/rbbcLogs | awk '{print $1}')
 log1=$(cat ~/rb/logs/rbbcLogs | tail -1 | sed 's/\"/\\\"/g' )
 id=redbelly-$REDBELLY_ID
 chain=devnet2
+bucket=node
 
 cat << EOF
 {
@@ -40,7 +41,7 @@ EOF
 if [ ! -z $INFLUX_HOST ]
 then
  curl --request POST \
- "$INFLUX_HOST/api/v2/write?org=$INFLUX_ORG&bucket=$REDBELLY_BUCKET&precision=ns" \
+ "$INFLUX_HOST/api/v2/write?org=$INFLUX_ORG&bucket=$bucket&precision=ns" \
   --header "Authorization: Token $INFLUX_TOKEN" \
   --header "Content-Type: text/plain; charset=utf-8" \
   --header "Accept: application/json" \

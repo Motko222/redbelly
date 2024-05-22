@@ -29,6 +29,8 @@ cat << EOF
   "updated":"$(date --utc +%FT%TZ)",
   "folder_size":"$folder_size",
   "log_size":"$log_size",
+  "local_height":"$local_height",
+  "net_height":"$net_height",
   "logs": [
   { "message":"$(echo $log1)" }
   ]

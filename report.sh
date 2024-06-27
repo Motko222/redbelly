@@ -13,9 +13,9 @@ if [ -z $pid ]; then status="error";note="not running"; fi
 folder_size=$(du -hs ~/rb | awk '{print $1}')
 log_size=$(du -hs ~/rb/logs/rbbcLogs | awk '{print $1}')
 log1=$(cat ~/rb/logs/rbbcLogs | tail -1 | sed 's/\"/\\\"/g' )
-id=redbelly-$REDBELLY_ID
+id=$REDBELLY_ID
+network=devnet
 chain=devnet2
-bucket=node
 
 cat << EOF
 {

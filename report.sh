@@ -16,6 +16,7 @@ log1=$(cat ~/rb/logs/rbbcLogs | tail -1 | sed 's/\"/\\\"/g' )
 id=$REDBELLY_ID
 network=devnet
 chain=devnet2
+group=node
 
 cat << EOF
 {

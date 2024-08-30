@@ -4,7 +4,7 @@ source ~/.bash_profile
 pid=$(pgrep 'rbbc')
 local_rpc=$REDBELLY_RPC
 net_rpc=https://rbn-gcp-australia-southeast1-a-0-b-v2.devnet.redbelly.network:8545
-owner=$REDBELLY_OWNER
+owner=$OWNER
 id=$REDBELLY_ID
 network=devnet
 chain=devnet2

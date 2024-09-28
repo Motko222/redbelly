@@ -29,7 +29,8 @@ cat >$json << EOF
         "id":"$folder",
         "machine":"$MACHINE",
         "owner":"$OWNER",
-        "grp":"node" }
+        "grp":"node" 
+  },
   "fields": {
         "chain":"devnet2",
         "network":"devnet",

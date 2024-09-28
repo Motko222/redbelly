@@ -1,14 +1,13 @@
 #!/bin/bash
+
+path=$(cd -- $(dirname -- "${BASH_SOURCE[0]}") && pwd)
+folder=$(echo $path | awk -F/ '{print $NF}')
+json=~/logs/report-$folder
 source ~/.bash_profile
 
 pid=$(pgrep 'rbbc')
 local_rpc=$REDBELLY_RPC
 net_rpc=https://rbn-gcp-australia-southeast1-a-0-b-v2.devnet.redbelly.network:8545
-owner=$OWNER
-id=$REDBELLY_ID
-network=devnet
-chain=devnet2
-group=node
 
 # localHeight=$(curl -s localhost:8080/metrics | grep -v "#" | grep rbn_database_chaindb_height | awk '{print $2}')
 #local_height=$(cat ~/rb/logs/rbbcLogs | grep "Imported new chain segment" | tail -1 | awk -F 'number":"' '{print $2}' | cut -d '"' -f 1)
@@ -20,37 +19,29 @@ if (( $local_height == $net_height )); then status="ok";message="governor:$is_go
 if [ -z $pid ]; then status="error";note="not running"; fi
 folder_size=$(du -hs ~/rb | awk '{print $1}')
 log_size=$(du -hs ~/rb/logs/rbbcLogs | awk '{print $1}')
-log1=$(cat ~/rb/logs/rbbcLogs | tail -1 | sed 's/\"/\\\"/g' )
+#log1=$(cat ~/rb/logs/rbbcLogs | tail -1 | sed 's/\"/\\\"/g' )
 
-cat << EOF
-{
-  "id":"$id",
-  "machine":"$MACHINE",
-  "chain":"$chain",
-  "type":"node",
-  "status":"$status",
-  "message":"$message",
-  "is_governor":"$is_governor",
+cat >$json << EOF
+{ 
   "updated":"$(date --utc +%FT%TZ)",
-  "folder_size":"$folder_size",
-  "log_size":"$log_size",
-  "local_height":"$local_height",
-  "net_height":"$net_height",
-  "logs": [
-  { "message":"$(echo $log1)" }
-  ]
+  "measurement":"report",
+  "tags": {
+        "id":"$folder",
+        "machine":"$MACHINE",
+        "owner":"$OWNER",
+        "grp":"node" }
+  "fields": {
+        "chain":"devnet2",
+        "network":"devnet",
+        "status":"$status",
+        "message":"$message",
+        "is_governor":"$is_governor",
+        "folder_size":"$folder_size",
+        "log_size":"$log_size",
+        "local_height":"$local_height",
+        "net_height":"$net_height"
+  }
 }
 EOF
 
-# send data to influxdb
-if [ ! -z $INFLUX_HOST ]
-then
- curl --request POST \
- "$INFLUX_HOST/api/v2/write?org=$INFLUX_ORG&bucket=$INFLUX_BUCKET&precision=ns" \
-  --header "Authorization: Token $INFLUX_TOKEN" \
-  --header "Content-Type: text/plain; charset=utf-8" \
-  --header "Accept: application/json" \
-  --data-binary "
-    report,id=$id,machine=$MACHINE,grp=$group,owner=$owner status=\"$status\",message=\"$message\",version=\"$version\",url=\"$url\",chain=\"$chain\",network=\"$network\" $(date +%s%N) 
-    "
-fi
+cat $json | jq

@@ -16,8 +16,8 @@ is_governor=$(cat ~/rb/logs/rbbcLogs | grep "IsGovernor" | tail -1 | awk -F 'IsG
 
 if (( $local_height == $net_height )); then status="ok";message="governor:$is_governor"; else status="warning";message=" syncing $local_height/$net_height"; fi
 if [ -z $pid ]; then status="error";note="not running"; fi
-folder_size=$(du -hs ~/rb | awk '{print $1}')
-log_size=$(du -hs ~/rb/logs/rbbcLogs | awk '{print $1}')
+folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
+log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 #log1=$(cat ~/rb/logs/rbbcLogs | tail -1 | sed 's/\"/\\\"/g' )
 
 cat >$json << EOF

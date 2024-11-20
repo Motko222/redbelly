@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd ~/rb
-./start-rbn.sh
+systemctl restart redbelly.service
+sleep 5
 

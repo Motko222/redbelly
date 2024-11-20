@@ -1,3 +1,3 @@
 #!/bin/bash
 
-pkill rbbc
+systemctl stop redbelly.service

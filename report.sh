@@ -12,7 +12,7 @@ pid=$(pgrep 'rbbc')
 local_height=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "Imported new chain segment" | tail -1 | awk -F 'number": "' '{print $2}' | cut -d '"' -f 1)
 #local_height=$(echo $(( 16#$(curl -s $LOCAL_RPC -X POST -H "Content-Type: application/json" --data '{"method":"eth_getBlockByNumber","params":["latest",false],"id":1,"jsonrpc":"2.0"}' | jq -r .result.number | sed 's/0x//') )))
 net_height=$(echo $(( 16#$(curl -s $NET_RPC -X POST -H "Content-Type: application/json" --data '{"method":"eth_getBlockByNumber","params":["latest",false],"id":1,"jsonrpc":"2.0"}' | jq -r .result.number | sed 's/0x//') )))
-is_governor=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "IsGovernor" | tail -1 | awk -F 'IsGovernor: ' '{print $2}' | cut -d '"' -f 1)
+is_governor=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "and is governor" | tail -1 | awk -F 'and is governor ' '{print $2}' | awk '{print $1}')
 
 if (( $local_height == $net_height )); then status="ok";message="governor:$is_governor"; else status="warning";message=" syncing $local_height/$net_height"; fi
 if [ -z $pid ]; then status="error";note="not running"; fi

@@ -31,8 +31,8 @@ cat >$json << EOF
         "grp":"node" 
   },
   "fields": {
-        "chain":"devnet2",
-        "network":"devnet",
+        "chain":"testnet",
+        "network":"testnet",
         "status":"$status",
         "message":"$message",
         "is_governor":"$is_governor",

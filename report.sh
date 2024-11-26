@@ -19,6 +19,9 @@ if [ -z $pid ]; then status="error";note="not running"; fi
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
+cd $INSTALL
+version=$(./rbbc -v | awk '{print $3}')
+
 cat >$json << EOF
 { 
   "updated":"$(date --utc +%FT%TZ)",
@@ -33,6 +36,7 @@ cat >$json << EOF
         "chain":"testnet",
         "network":"testnet",
         "status":"$status",
+        "version":"$version",
         "message":"$message",
         "is_governor":"$is_governor",
         "folder_size":"$folder_size",

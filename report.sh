@@ -15,12 +15,14 @@ local_height=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep -a "Done proc
 net_height=$(echo $(( 16#$(curl -s $NET_RPC -X POST -H "Content-Type: application/json" --data '{"method":"eth_getBlockByNumber","params":["latest",false],"id":1,"jsonrpc":"2.0"}' | jq -r .result.number | sed 's/0x//') )))
 is_governor=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep -a "and is governor" | tail -1 | awk -F 'and is governor ' '{print $2}' | awk '{print $1}')
 errors=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep -a $(date +%Y-%m-%d) | grep -c ERROR)
-
-if (( $local_height == $net_height )); then status="ok";message="governor:$is_governor"; else status="warning";message=" syncing $local_height/$net_height"; fi
-[ $errors -gt 100 ] && status=warning && message="errors=$errors";
-if [ -z $pid ]; then status="error";note="not running"; fi
+behind=$(( $net_height - $local_height))
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
+
+[ $behind -gt 5 ] && status="ok" && message="governor:$is_governor" || status="warning" && message=" syncing $local_height/$net_height (behind $behind)"
+[ $errors -gt 100 ] && status="warning" && message="errors=$errors";
+[ -z $pid ] && status="error" && note="process not running"
+
 
 cd $INSTALL
 version=$(./rbbc -v | awk '{print $3}')

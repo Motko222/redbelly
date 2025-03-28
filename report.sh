@@ -17,7 +17,7 @@ is_governor=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep -a "and is gov
 errors=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep -a $(date +%Y-%m-%d) | grep -c ERROR)
 
 if (( $local_height == $net_height )); then status="ok";message="governor:$is_governor"; else status="warning";message=" syncing $local_height/$net_height"; fi
-[ $errors -gt 100 ] status=warning && message="errors=$errors";
+[ $errors -gt 100 ] && status=warning && message="errors=$errors";
 if [ -z $pid ]; then status="error";note="not running"; fi
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')

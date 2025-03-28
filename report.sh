@@ -41,6 +41,7 @@ cat >$json << EOF
         "status":"$status",
         "version":"$version",
         "message":"$message",
+        "errors":"$errors",
         "is_governor":"$is_governor",
         "folder_size":"$folder_size",
         "log_size":"$log_size",

@@ -19,7 +19,7 @@ behind=$(( $net_height - $local_height))
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
-if [ $behind -gt 5 ]
+if [ $behind -le 5 ]
 then
    status="ok" && message="governor:$is_governor"
 else 

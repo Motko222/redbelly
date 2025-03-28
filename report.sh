@@ -19,8 +19,8 @@ behind=$(( $net_height - $local_height))
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
-[ $behind -gt 5 ] && status="ok" && message="governor:$is_governor" || status="warning" && message=" syncing $local_height/$net_height (behind $behind)"
-[ $errors -gt 100 ] && status="warning" && message="errors=$errors";
+[ $behind -gt 5 ] && ( status="ok" && message="governor:$is_governor") || ( status="warning" && message=" syncing $local_height/$net_height (behind $behind)" )
+[ $errors -gt 100 ] && status="warning" && message="errors=$errors behind=$behind";
 [ -z $pid ] && status="error" && note="process not running"
 
 

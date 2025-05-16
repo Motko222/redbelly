@@ -21,7 +21,7 @@ log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
 if [ $behind -le 5 ]
 then
-   status="ok" && message="governor:$is_governor"
+   status="ok" && message="governor=$is_governor"
 else 
    status="warning" && message=" syncing $local_height/$net_height (behind $behind)"
 fi

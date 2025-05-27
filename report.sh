@@ -26,7 +26,7 @@ else
    status="warning" && message=" syncing $local_height/$net_height (behind $behind)"
 fi
 [ $errors -gt 100 ] && status="warning" && message="errors=$errors behind=$behind";
-[ -z $pid ] && status="error" && note="process not running"
+[ -z $pid ] && status="error" && message="process not running"
 
 
 cd $INSTALL

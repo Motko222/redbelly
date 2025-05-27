@@ -27,7 +27,8 @@ then
 else 
    status="warning" && message=" syncing $local_height/$net_height (behind $behind)"
 fi
-[ $errors -gt 100 ] && status="warning" && message="errors=$errors behind=$behind";
+[ $errors -gt 100 ] && status="warning" && message="errors=$errors behind=$behind"
+[ $exp -le 7 ] && status="warning" && message="certificate expires in $exp days"
 [ -z $pid ] && status="error" && message="process not running"
 
 

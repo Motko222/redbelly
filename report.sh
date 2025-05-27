@@ -54,7 +54,8 @@ cat >$json << EOF
         "log_size":"$log_size",
         "local_height":"$local_height",
         "net_height":"$net_height",
-        "behind":"$behind"
+        "behind":"$behind",
+        "url":"data=$folder_size log=$log_size"
   }
 }
 EOF

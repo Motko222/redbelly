@@ -19,7 +19,7 @@ behind=$(( $net_height - $local_height))
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
-exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will expire at time" | tail -1 | cut -d "(" -f 2 | cut -d . -f 1)
+exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will expire at time" | tail -1 | cut -d "(" -f 2 | cut -d "h" -f 1)h
 
 if [ $behind -le 5 ]
 then

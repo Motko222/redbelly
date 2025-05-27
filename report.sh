@@ -19,6 +19,8 @@ behind=$(( $net_height - $local_height))
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
+exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will expire at time" | tail -1 | cut -d ( -f 2 | cut -d . -f 1)
+
 if [ $behind -le 5 ]
 then
    status="ok" && message="governor=$is_governor"
@@ -55,7 +57,7 @@ cat >$json << EOF
         "local_height":"$local_height",
         "net_height":"$net_height",
         "behind":"$behind",
-        "url":"data=$folder_size log=$log_size"
+        "url":"data=$folder_size log=$log_size exp=$exp"
   }
 }
 EOF

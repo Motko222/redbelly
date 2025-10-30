@@ -21,16 +21,12 @@ log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
 exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will expire at time" | tail -1 | cut -d "(" -f 2 | cut -d "h" -f 1 | awk '{print $1/24}' | cut -d , -f 1)
 
-if [ $behind -le 5 ]
-then
-   status="ok" && message="governor=$is_governor"
-else 
-   status="warning" && message="$behind blocks behind"
-fi
-[ $errors -gt 100 ] && status="warning" && message="$errors today"
+[ "$is_governor" -eq "false" ] && status="ok" && message="node is not governor"
+[ "$is_governor" -eq "true" ] && status="ok" && message="node is governor"
+[ $behind -le 5 ] && status="warning" && message="$behind blocks behind"
+[ $errors -gt 100 ] && status="warning" && message="$errors errors today"
 [ $exp -le 7 ] && status="warning" && message="certificate expires in $exp days"
-[ -z $pid ] && status="error" && message="process not running"
-
+[ -z $pid ] && status="error" && message="process is not running"
 
 cd $INSTALL
 version=$(./rbbc -v | awk '{print $3}')
@@ -52,13 +48,9 @@ cat >$json << EOF
         "version":"$version",
         "message":"$message",
         "errors":"$errors",
-        "is_governor":"$is_governor",
-        "folder_size":"$folder_size",
-        "log_size":"$log_size",
-        "local_height":"$local_height",
-        "m1":"governor $is_governor",
-        "m2":"sync $local_height/$net_height behind $behind",
-        "url":"data=$folder_size log=$log_size exp=$exp"
+        "m1":"governor=$is_governor",
+        "m2":"sync=$local_height/$net_height behind=$behind",
+        "m3":"data=$folder_size log=$log_size exp=$exp"
   }
 }
 EOF

@@ -25,9 +25,9 @@ if [ $behind -le 5 ]
 then
    status="ok" && message="governor=$is_governor"
 else 
-   status="warning" && message=" syncing $local_height/$net_height (behind $behind)"
+   status="warning" && message="$behind blocks behind"
 fi
-[ $errors -gt 100 ] && status="warning" && message="errors=$errors behind=$behind"
+[ $errors -gt 100 ] && status="warning" && message="$errors today"
 [ $exp -le 7 ] && status="warning" && message="certificate expires in $exp days"
 [ -z $pid ] && status="error" && message="process not running"
 
@@ -56,8 +56,8 @@ cat >$json << EOF
         "folder_size":"$folder_size",
         "log_size":"$log_size",
         "local_height":"$local_height",
-        "net_height":"$net_height",
-        "behind":"$behind",
+        "m1":"governor $is_governor",
+        "m2":"sync $local_height/$net_height behind $behind",
         "url":"data=$folder_size log=$log_size exp=$exp"
   }
 }

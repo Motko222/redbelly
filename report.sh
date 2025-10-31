@@ -21,8 +21,8 @@ log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
 exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will expire at time" | tail -1 | cut -d "(" -f 2 | cut -d "h" -f 1 | awk '{print $1/24}' | cut -d , -f 1)
 
-[ "$is_governor" -eq "false" ] && status="ok" && message="node is not governor"
-[ "$is_governor" -eq "true" ] && status="ok" && message="node is governor"
+[ "$is_governor" == "false" ] && status="ok" && message="node is not governor"
+[ "$is_governor" == "true" ] && status="ok" && message="node is governor"
 [ $behind -gt 5 ] && status="warning" && message="$behind blocks behind"
 [ $errors -gt 100 ] && status="warning" && message="$errors errors today"
 [ $exp -le 7 ] && status="warning" && message="certificate expires in $exp days"

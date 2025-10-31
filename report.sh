@@ -23,7 +23,7 @@ exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will 
 
 [ "$is_governor" -eq "false" ] && status="ok" && message="node is not governor"
 [ "$is_governor" -eq "true" ] && status="ok" && message="node is governor"
-[ $behind -le 5 ] && status="warning" && message="$behind blocks behind"
+[ $behind -gt 5 ] && status="warning" && message="$behind blocks behind"
 [ $errors -gt 100 ] && status="warning" && message="$errors errors today"
 [ $exp -le 7 ] && status="warning" && message="certificate expires in $exp days"
 [ -z $pid ] && status="error" && message="process is not running"

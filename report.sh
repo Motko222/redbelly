@@ -19,7 +19,8 @@ behind=$(( $net_height - $local_height))
 folder_size=$(du -hs /opt/redbelly | awk '{print $1}')
 log_size=$(du -hs /var/log/redbelly | awk '{print $1}')
 
-exp=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep "TLS certificate will expire" | tail -1 | cut -d "(" -f 2 | cut -d "h" -f 1 | awk '{print $1/24}' | cut -d , -f 1)
+exp_hours=$(cat /var/log/redbelly/rbn_logs/rbbc_logs.log | grep -a "TLS certificate expiry status" | tail -1 | sed -n 's/.*timeRemaining=\([0-9]*\)h.*/\1/p')
+exp=$(( ${exp_hours:-0} / 24 ))
 
 [ "$is_governor" == "false" ] && status="ok" && message="node is not governor"
 [ "$is_governor" == "true" ] && status="ok" && message="node is governor"
